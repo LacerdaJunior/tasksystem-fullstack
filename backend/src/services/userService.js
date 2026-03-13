@@ -41,7 +41,12 @@ export class UserService {
 
     return {
       token,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar_url: user.avatar_url,
+      },
     };
   }
 
@@ -53,5 +58,38 @@ export class UserService {
     }
 
     await database.updateAvatar(email, mascotName);
+  }
+
+  async changePassword(email, oldPassword, newPassword) {
+    const user = await database.findByEmail(email);
+
+    if (!user) {
+      throw new Error("invalid user request");
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid password");
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    await database.updatePassword(user, newHashedPassword);
+  }
+
+  async deleteAccount(email, password) {
+    const user = await database.findByEmail(email);
+
+    if (!user) {
+      throw new Error("Invalid user");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid password");
+    }
+
+    await database.deleteUser(email);
   }
 }

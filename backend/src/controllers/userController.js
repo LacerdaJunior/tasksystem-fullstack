@@ -50,4 +50,34 @@ export class UserController {
       return res.status(400).send(error.message);
     }
   }
+
+  async updatePassword(req, res) {
+    const { email, oldPassword, newPassword } = req.body;
+
+    if (!email || !oldPassword || !newPassword) {
+      return res.status(400).send("All data must be filled!");
+    }
+
+    try {
+      await userService.changePassword(email, oldPassword, newPassword);
+      return res.status(200).json("Password updated successfully!");
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
+  }
+
+  async deleteUser(req, res) {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).send("All data must be filled!");
+    }
+
+    try {
+      await userService.deleteAccount(email, password);
+      return res.status(200).json("Account has been deleted");
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
+  }
 }

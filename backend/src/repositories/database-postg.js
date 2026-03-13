@@ -23,4 +23,31 @@ export class DatabasePostg {
       throw error;
     }
   }
+
+  async updatePassword(email, newPassword) {
+    try {
+      await sql`
+        UPDATE users 
+        SET password = ${newPassword} 
+        WHERE email = ${email}
+      `;
+
+      return true;
+    } catch (error) {
+      console.error("Erro ao atualizar senha no banco:", error);
+      throw new Error("Erro interno ao atualizar a senha no banco de dados.");
+    }
+  }
+
+  async deleteUser(email) {
+    try {
+      await sql`
+      DELETE FROM users WHERE email = ${email}
+      `;
+      return true;
+    } catch (error) {
+      console.log("Erro ao excluir conta no banco:", error);
+      throw new Error("Erro interno ao confirmar exclusão de conta");
+    }
+  }
 }

@@ -6,5 +6,7 @@ const userController = new UserController();
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
-routes.patch("/dashboard/avatar", userController.updateAvatar);
+routes.patch("/dashboard", userController.updateAvatar);
+routes.patch("/dashboard/perfil/settings", userController.updatePassword);
+routes.delete("/dashboard/perfil/settings", userController.deleteUser);
 export default routes;
