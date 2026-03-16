@@ -6,6 +6,7 @@ import { Footer } from "../components/footer";
 import { Header } from "../components/Header";
 import { AnchorHome } from "../components/AnchorHome";
 import { api } from "../services/api";
+import { useEffect } from "react";
 
 export function Register() {
   const [name, setName] = useState("");
@@ -15,6 +16,14 @@ export function Register() {
   const [carregando, setCarregando] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userLogado = localStorage.getItem("@LoginOne:user");
+
+    if (userLogado) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -34,8 +43,7 @@ export function Register() {
     } catch (error) {
       console.error("Erro no cadastro:", error);
       setErro(
-        error.response?.data?.error ||
-          "Erro ao criar a conta. Email informado já está em uso."
+        error.response?.data?.error || "Erro ao criar a conta. Tente novamente."
       );
     } finally {
       setCarregando(false);

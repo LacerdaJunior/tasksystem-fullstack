@@ -5,6 +5,7 @@ import { Mail, Lock, ArrowRight, Flame } from "lucide-react";
 import { Footer } from "../components/footer";
 import { AnchorHome } from "../components/AnchorHome";
 import { api } from "../services/api";
+import { useEffect } from "react";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,14 @@ export function Login() {
   const [carregando, setCarregando] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userLogado = localStorage.getItem("@LoginOne:user");
+
+    if (userLogado) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

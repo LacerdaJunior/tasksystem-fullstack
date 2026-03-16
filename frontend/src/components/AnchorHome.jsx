@@ -1,58 +1,68 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { LogIn, UserPlus, Flame, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { Flame } from "lucide-react";
+import { UserMenu } from "./UserMenu";
 
 export function AnchorHome() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [trigger, setTrigger] = useState(0);
+  const location = useLocation();
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  useEffect(() => {
+    const carregarUsuario = () => {
+      const userString = localStorage.getItem("@LoginOne:user");
+      if (userString) {
+        setUser(JSON.parse(userString));
+        setTrigger((prev) => prev + 1);
+      } else {
+        setUser(null);
+      }
+    };
+
+    carregarUsuario();
+    window.addEventListener("usuarioAtualizado", carregarUsuario);
+    window.addEventListener("storage", carregarUsuario);
+
+    return () => {
+      window.removeEventListener("usuarioAtualizado", carregarUsuario);
+      window.removeEventListener("storage", carregarUsuario);
+    };
+  }, [location.pathname]);
+
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
-    <header className="w-full py-4 px-8 flex justify-between items-center border-zinc-800 relative z-50 bg-white">
+    <header className="w-full py-4 px-8 flex justify-between items-center border-b border-zinc-100 bg-white relative z-40">
       <div className="flex items-center gap-1">
-        <div>
-          <Flame className="text-brand fill-brand" />
-        </div>
+        <Flame className="text-brand fill-brand" />
         <Link to="/">
-          <span className="font-bold">LoginSystem</span>
+          <span className="font-bold text-xl text-zinc-800">LoginSystem</span>
         </Link>
       </div>
 
-      <button
-        className="md:hidden text-black focus:outline-none"
-        onClick={toggleMenu}
-      >
-        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-      </button>
-
-      {/* Menu Mobile (Dropdown) */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="absolute top-full left-0 w-full bg-white border-b border-zinc-200 flex flex-col p-6 gap-6 md:hidden overflow-hidden shadow-lg"
-          >
-            <Link
-              to="/login"
-              onClick={toggleMenu}
-              className="flex items-center gap-2 text-black font-medium font-space text-lg"
-            >
-              <LogIn size={20} />
-              Entrar
-            </Link>
-
-            <Link to="/register" onClick={toggleMenu}>
-              <button className="w-full flex items-center justify-center gap-2 text-black px-5 py-3 rounded-lg font-medium font-space border-2 border-black">
-                <UserPlus size={20} />
+      <div className="flex items-center gap-4 text-black">
+        {user ? (
+          <UserMenu user={user} />
+        ) : (
+          !isAuthPage && (
+            <div className="flex items-center gap-4">
+              <Link
+                to="/login"
+                className="font-medium text-zinc-600 hover:text-brand transition-colors"
+              >
+                Entrar
+              </Link>
+              <Link
+                to="/register"
+                className="bg-brand text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition-all shadow-sm"
+              >
                 Começar Agora
-              </button>
-            </Link>
-          </motion.div>
+              </Link>
+            </div>
+          )
         )}
-      </AnimatePresence>
+      </div>
     </header>
   );
 }

@@ -19,7 +19,6 @@ export function Header() {
         </span>
       </div>
 
- 
       <button
         className="md:hidden text-black focus:outline-none"
         onClick={toggleMenu}
@@ -27,7 +26,6 @@ export function Header() {
         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
-      
       <nav className="hidden md:flex items-center gap-4">
         <Link to="/login">
           <motion.button
@@ -52,7 +50,6 @@ export function Header() {
         </Link>
       </nav>
 
-      {/* Menu Mobile (Dropdown) */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
