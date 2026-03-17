@@ -53,7 +53,7 @@ Iniciado como um sistema robusto de autenticação, este projeto está evoluindo
 1. Clone este repositório:
 
 ```bash
-git clone git clone https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git
+git clone https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git
 ```
 ````
 
