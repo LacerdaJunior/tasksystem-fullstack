@@ -68,16 +68,63 @@ export class DatabasePostg {
   // MÉTODOS DE TAREFAS (TASKS)
   // ==========================================
 
-  async createTask(title, user_email) {
+  async createTask(
+    title,
+    description,
+    status,
+    due_date,
+    category_id,
+    user_email
+  ) {
     const taskId = randomUUID();
 
     try {
       await sql`
-      INSERT INTO tasks (id, title, user_email)
-       VALUES (${taskId},${title},${user_email})`;
+        INSERT INTO tasks (id, title, description, status, due_date, category_id, user_email) 
+        VALUES (${taskId}, ${title}, ${description}, ${status}, ${due_date}, ${category_id}, ${user_email})
+      `;
+      return true;
     } catch (error) {
-      console.log("Erro ao criar tarefa no banco", error);
-      throw new Error("Erro interno ao criar tarefa");
+      console.error("Erro ao criar tarefa no banco:", error);
+      throw new Error("Erro interno ao criar a tarefa.");
+    }
+  }
+
+  async createCategory(name, color, user_email) {
+    const categorieId = randomUUID();
+
+    try {
+      await sql`INSERT INTO categories (id, name, color, user_email) VALUES (${categorieId}, ${name}, ${color}, ${user_email} )`;
+      return true;
+    } catch (error) {
+      console.log("Erro ao definir categoria", error);
+      throw new Error("Erro interno ao definir categoria no banco");
+    }
+  }
+
+  async getTasksByUser(email) {
+    try {
+      const tasks = await sql`
+        SELECT 
+          t.id, 
+          t.title, 
+          t.description, 
+          t.status, 
+          t.due_date, 
+          t.created_at,
+          c.id AS category_id, 
+          c.name AS category_name, 
+          c.color AS category_color
+        FROM tasks t
+        LEFT JOIN categories c ON t.category_id = c.id
+        WHERE t.user_email = ${email}
+        ORDER BY t.created_at DESC
+      `;
+
+      return tasks;
+    } catch (error) {
+      console.error("Erro ao buscar tarefas no banco:", error);
+      throw new Error("Erro interno ao buscar as tarefas.");
     }
   }
 }

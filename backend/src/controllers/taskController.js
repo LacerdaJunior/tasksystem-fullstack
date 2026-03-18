@@ -4,17 +4,26 @@ const taskService = new TaskService();
 
 export class TaskController {
   async create(req, res) {
-    const { email, title } = req.body;
+    const { email, title, description, status, due_date, category_id } =
+      req.body;
 
     if (!email || !title) {
-      return res.status(400).send("All data must be filled!");
+      return res.status(400).json({ error: "Email and title are required!" });
     }
 
     try {
-      await taskService.createNewTask(title, email);
-      return res.status(200).send("Task created successfully!");
+      await taskService.createNewTask(
+        title,
+        description,
+        status,
+        due_date,
+        category_id,
+        email
+      );
+
+      return res.status(201).json({ message: "Task created successfully!" });
     } catch (error) {
-      return res.tatus(400).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   }
 }
