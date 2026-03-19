@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@fontsource/space-grotesk": "^5.2.10",
+    "@hello-pangea/dnd": "^18.0.1",
     "axios": "^1.13.6",
     "framer-motion": "^12.35.0",
     "lucide-react": "^0.577.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {

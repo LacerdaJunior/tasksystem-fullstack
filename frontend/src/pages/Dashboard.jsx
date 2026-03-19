@@ -1,13 +1,17 @@
 import { AnchorHome } from "../components/AnchorHome.jsx";
+import { Footer } from "../components/footer.jsx";
+import { TaskBoard } from "../components/TaskBoard.jsx";
 
 export function Dashboard() {
   return (
-    <div className="min-h-screen bg-zinc-50 font-space">
+    <div className="min-h-screen flex flex-col bg-zinc-50 font-space text-zinc-900">
       <AnchorHome />
 
-      <main className="max-w-7xl mx-auto px-8 py-10">
-        <h1 className="text-3xl font-bold text-zinc-800">Suas Tarefas</h1>
+      <main className="flex-1">
+        <TaskBoard />
       </main>
+
+      <Footer />
     </div>
   );
 }
