@@ -53,6 +53,6 @@ export class TaskService {
   }
 
   async deleteTask(taskId, email) {
-    await database.deleteTask(taskId, email);
+    await database.deleteTaskByUser(taskId, email);
   }
 }

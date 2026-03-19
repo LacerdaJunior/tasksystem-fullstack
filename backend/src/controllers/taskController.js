@@ -4,8 +4,9 @@ const taskService = new TaskService();
 
 export class TaskController {
   async create(req, res) {
-    const { email, title, description, status, due_date, category_id } =
-      req.body;
+    const email = req.headers["user-email"];
+
+    const { title, description, status, due_date, category_id } = req.body;
 
     if (!email || !title) {
       return res.status(400).json({ error: "Email and title are required!" });
@@ -14,10 +15,10 @@ export class TaskController {
     try {
       await taskService.createNewTask(
         title,
-        description,
+        description || null,
         status,
-        due_date,
-        category_id,
+        due_date || null,
+        category_id || null,
         email
       );
 

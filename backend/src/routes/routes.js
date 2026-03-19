@@ -10,12 +10,19 @@ const categoryController = new CategoryController();
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
+
 routes.patch("/dashboard/profile", userController.updateAvatar);
 routes.patch("/dashboard/profile/updatepass", userController.updatePassword);
 routes.delete("/dashboard/profile/deleteacc", userController.deleteUser);
 routes.patch("/dashboard/profile/name", userController.updateUsername);
-routes.post("/dashboard/tasks", taskController.create);
+
+//============
+// CRUD CATEGORY
+//=============
+
+routes.get("/dashboard/categories", categoryController.index);
 routes.post("/dashboard/categories", categoryController.create);
+routes.delete("/dashboard/categories/:id", categoryController.delete);
 
 //================
 // CRUD TASKS
@@ -23,7 +30,7 @@ routes.post("/dashboard/categories", categoryController.create);
 
 routes.get("/dashboard/tasks", taskController.index);
 
-routes.delete("/dashboard/tasks/:id", taskController.delete);
+routes.post("/dashboard/tasks", taskController.create);
 
 routes.patch("/dashboard/tasks/:id", taskController.update);
 

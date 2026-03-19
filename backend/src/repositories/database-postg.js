@@ -147,15 +147,48 @@ export class DatabasePostg {
   // MÉTODOS DE CATEGORIAS (CATEGORY/IES)
   // ==========================================
 
+  // ==========================================
+  // MÉTODOS DE CATEGORIAS (CATEGORY/IES)
+  // ==========================================
+
   async createCategory(name, color, user_email) {
     const categorieId = randomUUID();
-
     try {
       await sql`INSERT INTO categories (id, name, color, user_email) VALUES (${categorieId}, ${name}, ${color}, ${user_email} )`;
       return true;
     } catch (error) {
       console.log("Erro ao definir categoria", error);
       throw new Error("Erro interno ao definir categoria no banco");
+    }
+  }
+
+
+  async getCategoriesByUser(email) {
+    try {
+      const categories = await sql`
+        SELECT id, name, color 
+        FROM categories 
+        WHERE user_email = ${email}
+        ORDER BY name ASC
+      `;
+      return categories;
+    } catch (error) {
+      console.error("Erro ao buscar categorias no banco:", error);
+      throw new Error("Erro interno ao buscar categorias.");
+    }
+  }
+
+
+  async deleteCategory(categoryId, email) {
+    try {
+      await sql`
+        DELETE FROM categories 
+        WHERE id = ${categoryId} AND user_email = ${email}
+      `;
+      return true;
+    } catch (error) {
+      console.error("Erro ao deletar categoria no banco:", error);
+      throw new Error("Erro interno ao excluir a categoria.");
     }
   }
 }

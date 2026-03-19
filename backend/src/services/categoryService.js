@@ -12,4 +12,14 @@ export class CategoryService {
 
     await database.createCategory(name, color, user_email);
   }
+
+
+  async getCategories(user_email) {
+    return await database.getCategoriesByUser(user_email);
+  }
+
+
+  async deleteCategory(categoryId, user_email) {
+    await database.deleteCategory(categoryId, user_email);
+  }
 }
