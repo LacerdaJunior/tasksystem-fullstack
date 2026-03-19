@@ -1,5 +1,5 @@
 ````markdown
-# 🚀 [TaskHub]
+# 🚀 [TaskSystem]
 
 Uma plataforma web colaborativa para gerenciamento de tarefas
  e eventos entre amigos, com sistema de perfis customizáveis.
