@@ -39,8 +39,6 @@ export function Login() {
       localStorage.setItem("@LoginOne:token", token);
       localStorage.setItem("@LoginOne:user", JSON.stringify(user));
 
-      console.log("Login realizado com sucesso!", user);
-
       navigate("/dashboard");
     } catch (error) {
       console.error("Erro no login:", error);

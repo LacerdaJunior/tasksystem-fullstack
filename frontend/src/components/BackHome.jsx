@@ -9,7 +9,7 @@ export function BackHome() {
           <div className="flex items-center gap-1">
             <Flame className="text-brand fill-brand" />
             <span className="font-bold text-xl text-zinc-800 font-space tracking-wide">
-              LoginSystem
+              TaskSystem
             </span>
           </div>
         </Link>

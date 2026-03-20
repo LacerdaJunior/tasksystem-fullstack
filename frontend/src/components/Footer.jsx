@@ -1,4 +1,3 @@
-
 import { Flame, Github, Linkedin } from "lucide-react";
 
 export function Footer() {
@@ -7,7 +6,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2">
           <Flame size={20} className="text-brand fill-brand" />
-          <span className="font-space font-bold text-black">LoginSystem</span>
+          <span className="font-space font-bold text-black">TaskSystem</span>
           <span className="text-zinc-400 ml-2 text-sm">
             | © 2026 Guilherme Lacerda
           </span>

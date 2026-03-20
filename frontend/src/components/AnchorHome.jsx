@@ -31,7 +31,7 @@ export function AnchorHome() {
       <div className="flex items-center gap-1">
         <Flame className="text-brand fill-brand" />
         <Link to="/">
-          <span className="font-bold text-xl text-zinc-800">LoginSystem</span>
+          <span className="font-bold text-xl text-zinc-800">TaskSystem</span>
         </Link>
       </div>
 

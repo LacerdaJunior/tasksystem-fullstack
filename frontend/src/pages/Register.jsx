@@ -37,8 +37,6 @@ export function Register() {
         password,
       });
 
-      console.log("Conta criada com sucesso!");
-
       navigate("/login");
     } catch (error) {
       console.error("Erro no cadastro:", error);

@@ -15,7 +15,7 @@ export function Header() {
           <Flame className="text-brand fill-brand" />
         </div>
         <span className="text-xl font-bold text-black tracking-wide font-space">
-          LoginSystem
+          TaskSystem
         </span>
       </div>
 

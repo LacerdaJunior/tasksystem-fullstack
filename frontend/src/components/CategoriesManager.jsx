@@ -6,7 +6,7 @@ import { Tag, Plus, Trash2, Palette } from "lucide-react";
 export function CategoriesManager() {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
-  const [color, setColor] = useState("#6366F1"); 
+  const [color, setColor] = useState("#6366F1");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -15,14 +15,10 @@ export function CategoriesManager() {
 
   const fetchCategories = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-      if (!user) return;
-      const response = await api.get("/dashboard/categories", {
-        headers: { "user-email": user.email },
-      });
+      const response = await api.get("/dashboard/categories");
       setCategories(response.data);
     } catch (error) {
-      console.error("Erro ao procurar categorias:", error);
+      console.error(error);
     }
   };
 
@@ -33,12 +29,7 @@ export function CategoriesManager() {
     const loadingToast = toast.loading("A criar...");
 
     try {
-      const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-      await api.post(
-        "/dashboard/categories",
-        { name, color },
-        { headers: { "user-email": user.email } }
-      );
+      await api.post("/dashboard/categories", { name, color });
       toast.success("Categoria criada!", { id: loadingToast });
       setName("");
       setColor("#6366F1");
@@ -63,14 +54,8 @@ export function CategoriesManager() {
                 toast.dismiss(t.id);
                 const loadingToast = toast.loading("A excluir...");
                 try {
-                  const user = JSON.parse(
-                    localStorage.getItem("@LoginOne:user")
-                  );
-                  await api.delete(`/dashboard/categories/${categoryId}`, {
-                    headers: { "user-email": user.email },
-                  });
+                  await api.delete(`/dashboard/categories/${categoryId}`);
                   toast.success("Excluída com sucesso!", { id: loadingToast });
-
                   setCategories(
                     categories.filter((cat) => cat.id !== categoryId)
                   );
@@ -163,7 +148,6 @@ export function CategoriesManager() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {categories.map((cat) => (
-              
               <div
                 key={cat.id}
                 className="flex items-center justify-between p-4 rounded-xl border shadow-sm hover:shadow-md transition-all group"

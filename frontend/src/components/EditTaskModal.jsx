@@ -7,16 +7,15 @@ export function EditTaskModal({ isOpen, onClose, onTaskUpdated, task }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [categoryId, setCategoryId] = useState(""); 
-  const [categories, setCategories] = useState([]); 
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
- 
   useEffect(() => {
     if (task) {
       setTitle(task.title || "");
       setDescription(task.description || "");
-      setCategoryId(task.category?.id || ""); 
+      setCategoryId(task.category?.id || "");
 
       if (task.due_date) {
         const date = new Date(task.due_date);
@@ -28,15 +27,11 @@ export function EditTaskModal({ isOpen, onClose, onTaskUpdated, task }) {
     }
   }, [task]);
 
-
   useEffect(() => {
     if (isOpen) {
       const fetchCategories = async () => {
         try {
-          const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-          const response = await api.get("/dashboard/categories", {
-            headers: { "user-email": user.email },
-          });
+          const response = await api.get("/dashboard/categories");
           setCategories(response.data);
         } catch (error) {
           console.error("Erro ao carregar categorias", error);
@@ -54,19 +49,12 @@ export function EditTaskModal({ isOpen, onClose, onTaskUpdated, task }) {
     const loadingToast = toast.loading("Salvando alterações...");
 
     try {
-      const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-
-   
-      await api.patch(
-        `/dashboard/tasks/${task.id}`,
-        {
-          title,
-          description,
-          due_date: dueDate || null,
-          category_id: categoryId || null, 
-        },
-        { headers: { "user-email": user.email } }
-      );
+      await api.patch(`/dashboard/tasks/${task.id}`, {
+        title,
+        description,
+        due_date: dueDate || null,
+        category_id: categoryId || null,
+      });
 
       toast.success("Tarefa atualizada!", { id: loadingToast });
       onTaskUpdated();
@@ -129,7 +117,6 @@ export function EditTaskModal({ isOpen, onClose, onTaskUpdated, task }) {
               />
             </div>
 
-            {/* SELETOR DE CATEGORIA */}
             <div>
               <label className="block text-sm font-semibold text-zinc-700 mb-1">
                 Categoria

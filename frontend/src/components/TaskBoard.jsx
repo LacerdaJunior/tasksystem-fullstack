@@ -19,8 +19,8 @@ import {
   GripVertical,
   Pin,
   Tag,
-  ChevronDown, 
-  ChevronRight, 
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 
 const formatarData = (dataString) => {
@@ -46,11 +46,7 @@ const TaskCard = ({ task, onEdit, dragHandleProps }) => {
                 toast.dismiss(t.id);
                 const loadingToast = toast.loading("Excluindo...");
                 try {
-                  const userString = localStorage.getItem("@LoginOne:user");
-                  const user = JSON.parse(userString);
-                  await api.delete(`/dashboard/tasks/${task.id}`, {
-                    headers: { "user-email": user.email },
-                  });
+                  await api.delete(`/dashboard/tasks/${task.id}`);
                   toast.success("Tarefa excluída!", { id: loadingToast });
                   setTimeout(() => window.location.reload(), 1000);
                 } catch (error) {
@@ -169,7 +165,6 @@ export function TaskBoard() {
   const [selectedFilter, setSelectedFilter] = useState("ALL");
   const [isLoading, setIsLoading] = useState(true);
 
- 
   const [collapsed, setCollapsed] = useState({
     TODO: false,
     IN_PROGRESS: false,
@@ -185,18 +180,10 @@ export function TaskBoard() {
 
   useEffect(() => {
     async function fetchData() {
-      const userString = localStorage.getItem("@LoginOne:user");
-      if (!userString) return navigate("/login");
-      const user = JSON.parse(userString);
-
       try {
         const [tasksRes, catRes] = await Promise.all([
-          api.get("/dashboard/tasks", {
-            headers: { "user-email": user.email },
-          }),
-          api.get("/dashboard/categories", {
-            headers: { "user-email": user.email },
-          }),
+          api.get("/dashboard/tasks"),
+          api.get("/dashboard/categories"),
         ]);
 
         setTasks(tasksRes.data);
@@ -227,13 +214,7 @@ export function TaskBoard() {
     );
 
     try {
-      const userString = localStorage.getItem("@LoginOne:user");
-      const user = JSON.parse(userString);
-      await api.patch(
-        `/dashboard/tasks/${draggableId}`,
-        { status: newStatus },
-        { headers: { "user-email": user.email } }
-      );
+      await api.patch(`/dashboard/tasks/${draggableId}`, { status: newStatus });
     } catch (error) {
       toast.error("Erro ao salvar a posição.");
       window.location.reload();
@@ -250,7 +231,6 @@ export function TaskBoard() {
     });
   };
 
- 
   const toggleCollapse = (status) => {
     setCollapsed((prev) => ({ ...prev, [status]: !prev[status] }));
   };
@@ -343,7 +323,6 @@ export function TaskBoard() {
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-            {/* COLUNA: A FAZER */}
             <Droppable droppableId="TODO">
               {(provided, snapshot) => (
                 <div
@@ -353,7 +332,6 @@ export function TaskBoard() {
                     snapshot.isDraggingOver ? "bg-zinc-100" : ""
                   }`}
                 >
-                  {/* Cabeçalho Clicável */}
                   <div
                     onClick={() => toggleCollapse("TODO")}
                     className="flex items-center justify-between mb-2 cursor-pointer hover:bg-zinc-200/50 p-1.5 -mx-1.5 rounded-lg transition-colors select-none"
@@ -373,7 +351,6 @@ export function TaskBoard() {
                     </span>
                   </div>
 
-                  {/* Renderização Condicional das Tarefas */}
                   {!collapsed["TODO"] &&
                     getTasksByStatus("TODO").map((task, index) => (
                       <Draggable
@@ -407,7 +384,6 @@ export function TaskBoard() {
               )}
             </Droppable>
 
-            {/* COLUNA: EM ANDAMENTO */}
             <Droppable droppableId="IN_PROGRESS">
               {(provided, snapshot) => (
                 <div
@@ -470,7 +446,6 @@ export function TaskBoard() {
               )}
             </Droppable>
 
-            {/* COLUNA: CONCLUÍDO */}
             <Droppable droppableId="DONE">
               {(provided, snapshot) => (
                 <div

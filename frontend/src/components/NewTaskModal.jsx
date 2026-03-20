@@ -7,19 +7,15 @@ export function NewTaskModal({ isOpen, onClose, onTaskCreated }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [categoryId, setCategoryId] = useState(""); 
-  const [categories, setCategories] = useState([]); 
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   useEffect(() => {
     if (isOpen) {
       const fetchCategories = async () => {
         try {
-          const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-          const response = await api.get("/dashboard/categories", {
-            headers: { "user-email": user.email },
-          });
+          const response = await api.get("/dashboard/categories");
           setCategories(response.data);
         } catch (error) {
           console.error("Erro ao carregar categorias", error);
@@ -37,18 +33,13 @@ export function NewTaskModal({ isOpen, onClose, onTaskCreated }) {
     const loadingToast = toast.loading("Criando tarefa...");
 
     try {
-      const user = JSON.parse(localStorage.getItem("@LoginOne:user"));
-      await api.post(
-        "/dashboard/tasks",
-        {
-          title,
-          description,
-          due_date: dueDate || null,
-          category_id: categoryId || null, 
-          status: "TODO",
-        },
-        { headers: { "user-email": user.email } }
-      );
+      await api.post("/dashboard/tasks", {
+        title,
+        description,
+        due_date: dueDate || null,
+        category_id: categoryId || null,
+        status: "TODO",
+      });
 
       toast.success("Tarefa criada com sucesso!", { id: loadingToast });
       setTitle("");
@@ -115,7 +106,6 @@ export function NewTaskModal({ isOpen, onClose, onTaskCreated }) {
               />
             </div>
 
-            {/* SELETOR DE CATEGORIA */}
             <div>
               <label className="block text-sm font-semibold text-zinc-700 mb-1">
                 Categoria

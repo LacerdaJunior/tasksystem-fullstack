@@ -11,8 +11,6 @@ import {
   Check,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-
 import { api } from "../services/api";
 
 const AVATARES = [
@@ -69,7 +67,6 @@ export function ProfileModal({ onClose }) {
   const handleSalvarNome = async () => {
     try {
       await api.patch("/dashboard/profile/name", {
-        email: userEmail,
         newUsername: newName,
       });
 
@@ -92,7 +89,6 @@ export function ProfileModal({ onClose }) {
   const handleEscolherAvatar = async (caminhoDoAvatar) => {
     try {
       await api.patch("/dashboard/profile", {
-        email: userEmail,
         avatar_url: caminhoDoAvatar,
       });
 
@@ -120,7 +116,6 @@ export function ProfileModal({ onClose }) {
 
     try {
       await api.patch("/dashboard/profile/updatepass", {
-        email: userEmail,
         oldPassword: passwords.atual,
         newPassword: passwords.nova,
       });
@@ -143,7 +138,7 @@ export function ProfileModal({ onClose }) {
     if (confirmacao) {
       try {
         await api.delete("/dashboard/profile/deleteacc", {
-          data: { email: userEmail, password: deletePassword },
+          data: { password: deletePassword },
         });
         alert("Sua conta foi excluída com sucesso.");
         handleLogout();
