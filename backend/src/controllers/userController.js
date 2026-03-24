@@ -14,10 +14,8 @@ export class UserController {
       await userService.registerUser(name, email, password);
       return res.status(201).send("User created successfully!");
     } catch (error) {
-      // A MÁGICA DA OBSERVABILIDADE AQUI:
-      console.error("🚨 ERRO REAL NO CADASTRO:", error);
 
-      // (Arrumei o ponto final que faltava na string de verificação)
+   
       if (error.message === "Email already in use.") {
         return res.status(409).send(error.message);
       }
@@ -93,4 +91,6 @@ export class UserController {
       return res.status(400).json({ error: error.message });
     }
   }
+
+  
 }

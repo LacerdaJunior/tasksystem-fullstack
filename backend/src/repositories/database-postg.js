@@ -111,6 +111,63 @@ export class DatabasePostg {
     }
   }
 
+  async createSubtask(taskId, title) {
+    const subtaskId = randomUUID();
+
+    try {
+      await sql`
+        INSERT INTO subtasks (id, title, is_completed, task_id) 
+        VALUES (${subtaskId}, ${title}, false, ${taskId})
+      `;
+      return true;
+    } catch (error) {
+      console.error("Erro ao criar subtarefa no banco:", error);
+      throw new Error("Erro interno ao criar item do checklist.");
+    }
+  }
+
+  async getSubtasksByTaskId(taskId) {
+    try {
+      const subtasks = await sql`
+        SELECT id, title, is_completed 
+        FROM subtasks 
+        WHERE task_id = ${taskId}
+        ORDER BY title ASC
+      `;
+      return subtasks;
+    } catch (error) {
+      console.error("Erro ao buscar subtarefas no banco:", error);
+      throw new Error("Erro interno ao buscar o checklist.");
+    }
+  }
+
+  async toggleSubtaskStatus(subtaskId) {
+    try {
+      await sql`
+        UPDATE subtasks 
+        SET is_completed = NOT is_completed 
+        WHERE id = ${subtaskId}
+      `;
+      return true;
+    } catch (error) {
+      console.error("Erro ao atualizar subtarefa no banco:", error);
+      throw new Error("Erro interno ao atualizar status do checklist.");
+    }
+  }
+
+  async deleteSubtask(subtaskId) {
+    try {
+      await sql`
+        DELETE FROM subtasks 
+        WHERE id = ${subtaskId}
+      `;
+      return true;
+    } catch (error) {
+      console.error("Erro ao excluir subtarefa no banco:", error);
+      throw new Error("Erro interno ao excluir item do checklist.");
+    }
+  }
+
   async createCategory(name, color, user_id) {
     const categorieId = randomUUID();
     try {

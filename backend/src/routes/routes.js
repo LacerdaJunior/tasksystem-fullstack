@@ -3,11 +3,13 @@ import { UserController } from "../controllers/userController.js";
 import { TaskController } from "../controllers/taskController.js";
 import { CategoryController } from "../controllers/categoryController.js";
 import { ensureAuthenticated } from "../middlewares/authMiddleware.js";
+import { SubtaskController } from "../controllers/subtaskController.js";
 
 const routes = express.Router();
 const userController = new UserController();
 const taskController = new TaskController();
 const categoryController = new CategoryController();
+const subtaskController = new SubtaskController();
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
@@ -25,5 +27,11 @@ routes.get("/dashboard/tasks", ensureAuthenticated, taskController.index);
 routes.post("/dashboard/tasks", ensureAuthenticated, taskController.create);
 routes.patch("/dashboard/tasks/:id", ensureAuthenticated, taskController.update);
 routes.delete("/dashboard/tasks/:id", ensureAuthenticated, taskController.delete);
+
+
+routes.post("/dashboard/tasks/:taskId/subtasks", ensureAuthenticated, subtaskController.create);
+routes.get("/dashboard/tasks/:taskId/subtasks", ensureAuthenticated, subtaskController.index);
+routes.patch("/dashboard/subtasks/:id/toggle", ensureAuthenticated, subtaskController.toggle);
+routes.delete("/dashboard/subtasks/:id", ensureAuthenticated, subtaskController.delete);
 
 export default routes;

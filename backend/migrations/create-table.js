@@ -57,6 +57,21 @@ async function createTables() {
     `;
     console.log("Tabela 'tasks' verificada/criada com sucesso.");
 
+    // 3ª Tabela: Sub Tarefas (Depende de tasks)
+    await sql`
+    CREATE TABLE IF NOT EXISTS subtasks (
+      id           UUID PRIMARY KEY,
+      title        VARCHAR(255) NOT NULL,
+      is_completed BOOLEAN DEFAULT FALSE,
+      task_id      UUID NOT NULL,
+
+      CONSTRAINT fk_task
+        FOREIGN KEY(task_id) 
+        REFERENCES tasks(id)
+        ON DELETE CASCADE
+    )
+  `;
+
     console.log("🎉 Todas as tabelas prontas para uso!");
     process.exit(0);
   } catch (error) {
@@ -119,4 +134,19 @@ CREATE TABLE tasks (
     REFERENCES categories(id) 
     ON DELETE SET NULL
 );
+
+ // 3ª Tabela: Sub Tarefas (Depende de tasks)
+    await sql`
+    CREATE TABLE IF NOT EXISTS subtasks (
+      id           UUID PRIMARY KEY,
+      title        VARCHAR(255) NOT NULL,
+      is_completed BOOLEAN DEFAULT FALSE,
+      task_id      UUID NOT NULL,
+
+      CONSTRAINT fk_task
+        FOREIGN KEY(task_id) 
+        REFERENCES tasks(id)
+        ON DELETE CASCADE
+    )
+  `;
 */
