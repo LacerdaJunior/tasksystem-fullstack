@@ -168,6 +168,17 @@ export class DatabasePostg {
     }
   }
 
+  async getMetrics(userId) {
+    try {
+      const metrics =
+        await sql`SELECT status, COUNT(*) FROM tasks WHERE user_id = ${userId} GROUP BY status`;
+      return metrics;
+    } catch (error) {
+      console.error("Erro ao trazer metricas no banco:", error);
+      throw new Error("Erro interno ao trazer metricas do usuário.");
+    }
+  }
+
   async createCategory(name, color, user_id) {
     const categorieId = randomUUID();
     try {

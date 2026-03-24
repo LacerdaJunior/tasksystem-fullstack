@@ -4,12 +4,14 @@ import { TaskController } from "../controllers/taskController.js";
 import { CategoryController } from "../controllers/categoryController.js";
 import { ensureAuthenticated } from "../middlewares/authMiddleware.js";
 import { SubtaskController } from "../controllers/subtaskController.js";
+import { MetricsController } from "../controllers/metricsController.js";
 
 const routes = express.Router();
 const userController = new UserController();
 const taskController = new TaskController();
 const categoryController = new CategoryController();
 const subtaskController = new SubtaskController();
+const metricsController = new MetricsController();
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
@@ -34,4 +36,5 @@ routes.get("/dashboard/tasks/:taskId/subtasks", ensureAuthenticated, subtaskCont
 routes.patch("/dashboard/subtasks/:id/toggle", ensureAuthenticated, subtaskController.toggle);
 routes.delete("/dashboard/subtasks/:id", ensureAuthenticated, subtaskController.delete);
 
+routes.get("/dashboard/metrics", ensureAuthenticated, metricsController.index);
 export default routes;
