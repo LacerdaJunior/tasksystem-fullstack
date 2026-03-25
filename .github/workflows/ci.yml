@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Baixando o código
+      - name: 📥 Baixando o código do LacerdaJunior
         uses: actions/checkout@v4
 
       - name: ⚙️ Configurando o Node.js
@@ -19,8 +19,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: 📦 Instalando as dependências (npm install)
+      - name: 📦 Instalando as dependências do Backend
+        working-directory: ./backend
         run: npm install
 
       - name: 🧪 Rodando os Testes Unitários do Vitest
-        run: npm test
+        working-directory: ./backend
+        run: npx vitest run
