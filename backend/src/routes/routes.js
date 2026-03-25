@@ -5,6 +5,8 @@ import { CategoryController } from "../controllers/categoryController.js";
 import { ensureAuthenticated } from "../middlewares/authMiddleware.js";
 import { SubtaskController } from "../controllers/subtaskController.js";
 import { MetricsController } from "../controllers/metricsController.js";
+import { ProgressController } from "../controllers/progressController.js";
+import { FriendshipController } from "../controllers/friendshipController.js";
 
 const routes = express.Router();
 const userController = new UserController();
@@ -12,6 +14,8 @@ const taskController = new TaskController();
 const categoryController = new CategoryController();
 const subtaskController = new SubtaskController();
 const metricsController = new MetricsController();
+const progressController = new ProgressController();
+const friendshipController = new FriendshipController();
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
@@ -36,5 +40,14 @@ routes.get("/dashboard/tasks/:taskId/subtasks", ensureAuthenticated, subtaskCont
 routes.patch("/dashboard/subtasks/:id/toggle", ensureAuthenticated, subtaskController.toggle);
 routes.delete("/dashboard/subtasks/:id", ensureAuthenticated, subtaskController.delete);
 
+//sessão metricas do usuario/progresso.
+routes.get("/dashboard/tasks/progress", ensureAuthenticated, progressController.index);
+
 routes.get("/dashboard/metrics", ensureAuthenticated, metricsController.index);
+
+//sessão rede de amizades:
+routes.post("/friends/request", ensureAuthenticated, friendshipController.send);
+routes.patch("/friends/accept/:id", ensureAuthenticated, friendshipController.accept);
+routes.get("/friends/pending", ensureAuthenticated, friendshipController.pending);
+
 export default routes;

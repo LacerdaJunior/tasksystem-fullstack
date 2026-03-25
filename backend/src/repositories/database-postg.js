@@ -32,7 +32,10 @@ export class DatabasePostg {
       await sql`UPDATE users SET password = ${newPassword} WHERE id = ${id}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao atualizar a senha no banco de dados.");
+      throw new Error(
+        "Erro interno ao atualizar a senha no banco de dados.",
+        error
+      );
     }
   }
 
@@ -41,7 +44,7 @@ export class DatabasePostg {
       await sql`DELETE FROM users WHERE id = ${id}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao confirmar exclusão de conta");
+      throw new Error("Erro interno ao confirmar exclusão de conta", error);
     }
   }
 
@@ -50,7 +53,7 @@ export class DatabasePostg {
       await sql`UPDATE users SET name = ${newUsername} WHERE id = ${id}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao atualizar o nome de usuário.");
+      throw new Error("Erro interno ao atualizar o nome de usuário.", error);
     }
   }
 
@@ -63,7 +66,7 @@ export class DatabasePostg {
       `;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao criar a tarefa.");
+      throw new Error("Erro interno ao criar a tarefa.", error);
     }
   }
 
@@ -87,7 +90,7 @@ export class DatabasePostg {
       `;
       return tasks;
     } catch (error) {
-      throw new Error("Erro interno ao buscar as tarefas.");
+      throw new Error("Erro interno ao buscar as tarefas.", error);
     }
   }
 
@@ -96,7 +99,7 @@ export class DatabasePostg {
       await sql`DELETE FROM tasks WHERE id = ${taskId} AND user_id = ${userId}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao excluir a tarefa.");
+      throw new Error("Erro interno ao excluir a tarefa.", error);
     }
   }
 
@@ -107,7 +110,7 @@ export class DatabasePostg {
       )} WHERE id = ${id} AND user_id = ${userId}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao atualizar a tarefa.");
+      throw new Error("Erro interno ao atualizar a tarefa.", error);
     }
   }
 
@@ -168,6 +171,20 @@ export class DatabasePostg {
     }
   }
 
+  async getAllSubtasksByUser(userId) {
+    try {
+      const subtasks = await sql`
+        SELECT subtasks.* FROM subtasks
+        INNER JOIN tasks ON subtasks.task_id = tasks.id
+        WHERE tasks.user_id = ${userId}
+      `;
+      return subtasks;
+    } catch (error) {
+      console.error("Erro ao buscar as subtarefas do utilizador:", error);
+      throw new Error("Erro interno ao procurar checklists.");
+    }
+  }
+
   async getMetrics(userId) {
     try {
       const metrics =
@@ -185,7 +202,7 @@ export class DatabasePostg {
       await sql`INSERT INTO categories (id, name, color, user_id) VALUES (${categorieId}, ${name}, ${color}, ${user_id})`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao definir categoria no banco");
+      throw new Error("Erro interno ao definir categoria no banco", error);
     }
   }
 
@@ -199,7 +216,7 @@ export class DatabasePostg {
       `;
       return categories;
     } catch (error) {
-      throw new Error("Erro interno ao buscar categorias.");
+      throw new Error("Erro interno ao buscar categorias.", error);
     }
   }
 
@@ -208,7 +225,43 @@ export class DatabasePostg {
       await sql`DELETE FROM categories WHERE id = ${categoryId} AND user_id = ${userId}`;
       return true;
     } catch (error) {
-      throw new Error("Erro interno ao excluir a categoria.");
+      throw new Error("Erro interno ao excluir a categoria.", error);
+    }
+  }
+
+  async sendFriendRequest(senderID, receiverId) {
+    try {
+      await sql`INSERT INTO friendships (sender_id, receiver_id) VALUES (${senderID}, ${receiverId}) `;
+    } catch (error) {
+      throw new Error("Erro ao enviar solicitação de amizade.", error);
+    }
+  }
+
+  async acceptFriendRequest(connectionId) {
+    try {
+      await sql`UPDATE friendships SET status = 'ACCEPTED' WHERE id =  ${connectionId} `;
+    } catch (error) {
+      throw new Error("Erro ao aceitas solicitação de amizade.", error);
+    }
+  }
+
+  async getPendingRequests(userId) {
+    try {
+      const requests = await sql`
+          SELECT 
+              friendships.id,
+              users.name,
+              users.avatar_url
+              FROM friendships
+              INNER JOIN users 
+              ON users.id = friendships.sender_id
+              WHERE 
+              friendships.receiver_id = ${userId}
+              AND friendships.status = 'PENDING'
+`;
+      return requests;
+    } catch (error) {
+      throw new Error("Erro ao exibir solicitações de amizade.", error);
     }
   }
 }

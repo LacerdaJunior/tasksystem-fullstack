@@ -72,6 +72,19 @@ async function createTables() {
     )
   `;
 
+    // 4ª Tabela: Rede de amizades (Depende de users)
+    await sql`
+  CREATE TABLE IF NOT EXISTS friendships (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    receiver_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(sender_id, receiver_id) 
+  );
+`;
+
     console.log("🎉 Todas as tabelas prontas para uso!");
     process.exit(0);
   } catch (error) {
@@ -149,4 +162,16 @@ CREATE TABLE tasks (
         ON DELETE CASCADE
     )
   `;
+  // 4ª Tabela: Rede de amizades (Depende de users)
+  await sql`
+  CREATE TABLE IF NOT EXISTS friendships (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    receiver_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(sender_id, receiver_id) 
+  );
+`;
 */
