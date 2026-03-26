@@ -139,7 +139,7 @@ export class DatabasePostg {
     try {
       await sql`UPDATE tasks SET ${sql(
         updateData
-      )} WHERE id = ${id} AND user_id = ${userId}`;
+      )} WHERE id = ${id} AND (user_id = ${userId} OR assigned_to = ${userId}) `;
       return true;
     } catch (error) {
       throw new Error("Erro interno ao atualizar a tarefa.", error);
@@ -208,7 +208,7 @@ export class DatabasePostg {
       const subtasks = await sql`
         SELECT subtasks.* FROM subtasks
         INNER JOIN tasks ON subtasks.task_id = tasks.id
-        WHERE tasks.user_id = ${userId}
+        WHERE tasks.user_id = ${userId} OR tasks.assigned_to = ${userId}
       `;
       return subtasks;
     } catch (error) {
@@ -220,7 +220,7 @@ export class DatabasePostg {
   async getMetrics(userId) {
     try {
       const metrics =
-        await sql`SELECT status, COUNT(*) FROM tasks WHERE user_id = ${userId} GROUP BY status`;
+        await sql`SELECT status, COUNT(*) FROM tasks WHERE user_id = ${userId} OR assignet_to ${userId} GROUP BY status`;
       return metrics;
     } catch (error) {
       console.error("Erro ao trazer metricas no banco:", error);
