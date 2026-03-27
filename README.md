@@ -50,51 +50,118 @@ O sistema implementa uma regra de negócio rigorosa: apenas o **Dono** da tarefa
 
 ---
 
-### 🚀 Como executar o projeto localmente
+## 🚀 Como executar o projeto localmente
 
-#### **Pré-requisitos**
-* **Node.js** instalado (versão 18 ou superior)
-* Uma instância de **PostgreSQL** (ou conta no [Neon.tech](https://neon.tech))
+Siga os passos abaixo para rodar a aplicação completa (backend + frontend) em ambiente de desenvolvimento.
 
-#### **Passo a Passo**
+---
 
-1. **Clone o repositório:**
+### 📋 Pré-requisitos
+
+Antes de começar, você precisa ter instalado:
+
+- Node.js (versão 18 ou superior)
+- PostgreSQL ou uma conta no Neon.tech
+
+---
+
+### 📦 1. Clone o repositório
+
 ```bash
-git clone [https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git](https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git)
+git clone https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git
 cd Login-system-with-nodejs-express-react
-Configure o Backend:
-Abra o terminal na pasta /backend:
+```
 
-Bash
+---
+
+## ⚙️ Configuração do Backend
+
+### 📁 Acesse a pasta:
+```bash
+cd backend
+```
+
+### 📥 Instale as dependências:
+```bash
 npm install
-Crie um arquivo .env dentro da pasta backend com o seguinte conteúdo:
+```
 
-Snippet de código
-DATABASE_URL="sua_url_do_neon_aqui"
+### 🔐 Configure as variáveis de ambiente:
+
+Crie um arquivo `.env` na pasta `/backend`:
+
+```env
+DATABASE_URL="sua_url_do_banco_aqui"
 PORT=4949
 JWT_SECRET="sua_chave_secreta_aqui"
-Inicie o servidor de desenvolvimento:
+```
 
-Bash
+### ▶️ Inicie o servidor:
+```bash
 npm run dev
-Configure o Frontend:
-Em um novo terminal, abra a pasta /frontend:
+```
 
-Bash
+O backend estará rodando em:
+```
+http://localhost:4949
+```
+
+---
+
+## 💻 Configuração do Frontend
+
+### 📁 Em outro terminal, acesse:
+```bash
+cd frontend
+```
+
+### 📥 Instale as dependências:
+```bash
 npm install
-Crie um arquivo .env.local dentro da pasta frontend com o seguinte conteúdo:
+```
 
-Snippet de código
+### 🌐 Configure o ambiente:
+
+Crie um arquivo `.env.local` na pasta `/frontend`:
+
+```env
 VITE_API_URL=http://localhost:4949
-Inicie a aplicação:
+```
 
-Bash
+### ▶️ Inicie a aplicação:
+```bash
 npm run dev
-🗺️ Roadmap de Evolução (V2.0)
-[ ] WebSockets: Implementação de Socket.io para atualizações em tempo real.
+```
 
-[ ] Docker: Containerização completa do ambiente de desenvolvimento.
+O frontend estará disponível em:
+```
+http://localhost:5173
+```
 
-[ ] Testes: Cobertura de testes unitários com Jest e E2E com Cypress.
+---
 
-Desenvolvido com foco em Engenharia de Software por Guilherme Lacerda.
+## 🧠 Estrutura do Projeto
+
+```
+📦 root
+ ┣ 📂 backend   → API REST (Node.js + Express)
+ ┣ 📂 frontend  → Interface (React + Vite)
+```
+
+---
+
+## 🗺️ Roadmap (V2.0)
+
+Próximas melhorias planejadas:
+
+- [ ] WebSockets com Socket.io para tempo real  
+- [ ] Docker para padronização do ambiente  
+- [ ] Testes automatizados (Jest + Cypress)  
+- [ ] Refresh Token e melhorias de autenticação  
+- [ ] Dashboard com métricas de uso  
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido com foco em Engenharia de Software por **Guilherme Lacerda**.
