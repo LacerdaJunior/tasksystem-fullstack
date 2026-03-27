@@ -50,48 +50,50 @@ O sistema implementa uma regra de negócio rigorosa: apenas o **Dono** da tarefa
 
 ---
 
-🚀 Como executar o projeto localmente
-Pré-requisitos
-Node.js instalado (versão 18 ou superior)
+### 🚀 Como executar o projeto localmente
 
-Uma instância de PostgreSQL (ou conta no Neon.tech)
+#### **Pré-requisitos**
+* **Node.js** instalado (versão 18 ou superior)
+* Uma instância de **PostgreSQL** (ou conta no [Neon.tech](https://neon.tech))
 
-Passo a Passo
-Clone o repositório:
+#### **Passo a Passo**
 
-Bash
-git clone https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git
+1. **Clone o repositório:**
+```bash
+git clone [https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git](https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git)
 cd Login-system-with-nodejs-express-react
 Configure o Backend:
+Abra o terminal na pasta /backend:
 
 Bash
-# Entre na pasta e instale as dependências
-cd backend
 npm install
+Crie um arquivo .env dentro da pasta backend com o seguinte conteúdo:
 
-# Crie um arquivo .env na raiz da pasta /backend com:
-# DATABASE_URL="sua_url_do_neon"
-# PORT=4949
-# JWT_SECRET="sua_chave_secreta"
+Snippet de código
+DATABASE_URL="sua_url_do_neon_aqui"
+PORT=4949
+JWT_SECRET="sua_chave_secreta_aqui"
+Inicie o servidor de desenvolvimento:
 
-# Inicie o servidor
+Bash
 npm run dev
 Configure o Frontend:
+Em um novo terminal, abra a pasta /frontend:
 
 Bash
-# Em um novo terminal, entre na pasta frontend
-cd frontend
 npm install
+Crie um arquivo .env.local dentro da pasta frontend com o seguinte conteúdo:
 
-# Crie um arquivo .env.local na raiz da pasta /frontend com:
-# VITE_API_URL=http://localhost:4949
+Snippet de código
+VITE_API_URL=http://localhost:4949
+Inicie a aplicação:
 
-# Inicie a aplicação
+Bash
 npm run dev
 🗺️ Roadmap de Evolução (V2.0)
 [ ] WebSockets: Implementação de Socket.io para atualizações em tempo real.
 
-[ ] Docker: Containerização completa do ambiente.
+[ ] Docker: Containerização completa do ambiente de desenvolvimento.
 
 [ ] Testes: Cobertura de testes unitários com Jest e E2E com Cypress.
 
