@@ -50,36 +50,49 @@ O sistema implementa uma regra de negócio rigorosa: apenas o **Dono** da tarefa
 
 ---
 
-## 🚀 Como executar o projeto localmente
+🚀 Como executar o projeto localmente
+Pré-requisitos
+Node.js instalado (versão 18 ou superior)
 
-### Pré-requisitos
-- Node.js instalado
-- Uma instância de PostgreSQL (ou conta no [Neon.tech](https://neon.tech))
+Uma instância de PostgreSQL (ou conta no Neon.tech)
 
-### Passo a Passo
+Passo a Passo
+Clone o repositório:
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git](https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git)
+Bash
+git clone https://github.com/LacerdaJunior/Login-system-with-nodejs-express-react.git
+cd Login-system-with-nodejs-express-react
 Configure o Backend:
 
 Bash
+# Entre na pasta e instale as dependências
 cd backend
 npm install
-# Crie um arquivo .env com DATABASE_URL, PORT e JWT_SECRET
+
+# Crie um arquivo .env na raiz da pasta /backend com:
+# DATABASE_URL="sua_url_do_neon"
+# PORT=4949
+# JWT_SECRET="sua_chave_secreta"
+
+# Inicie o servidor
 npm run dev
 Configure o Frontend:
 
 Bash
-cd ../frontend
+# Em um novo terminal, entre na pasta frontend
+cd frontend
 npm install
-# Crie um arquivo .env.local com VITE_API_URL=http://localhost:3333
+
+# Crie um arquivo .env.local na raiz da pasta /frontend com:
+# VITE_API_URL=http://localhost:4949
+
+# Inicie a aplicação
 npm run dev
 🗺️ Roadmap de Evolução (V2.0)
 [ ] WebSockets: Implementação de Socket.io para atualizações em tempo real.
 
-[ ] Docker: Containerização completa do ambiente de desenvolvimento.
+[ ] Docker: Containerização completa do ambiente.
 
-[ ] Testes: Cobertura de testes unitários com Jest e testes E2E com Cypress.
+[ ] Testes: Cobertura de testes unitários com Jest e E2E com Cypress.
 
 Desenvolvido com foco em Engenharia de Software por Guilherme Lacerda.
