@@ -38,7 +38,7 @@ export class DatabasePostg {
 
   async create(user) {
     const userId = randomUUID();
-    const { name, email, password, username, avatar_url } = user; 
+    const { name, email, password, username, avatar_url } = user;
     await sql`INSERT INTO users (id, name, email, password, username, avatar_url) VALUES (${userId}, ${name}, ${email}, ${password}, ${username}, ${avatar_url})`;
   }
 
@@ -113,6 +113,7 @@ export class DatabasePostg {
           t.due_date, 
           t.created_at,
           t.assigned_to, 
+          t.user_id, 
           c.id AS category_id, 
           c.name AS category_name, 
           c.color AS category_color,

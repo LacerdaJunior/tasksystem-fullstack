@@ -1,4 +1,4 @@
-import sql from "../src/config/db.js";
+import sql from "../src/config/db.js"; 
 
 async function createTables() {
   try {
@@ -9,6 +9,7 @@ async function createTables() {
       CREATE TABLE IF NOT EXISTS users (
         id          TEXT PRIMARY KEY,
         name        VARCHAR(100) NOT NULL,
+        username    VARCHAR(50) UNIQUE NOT NULL, 
         email       VARCHAR(150) UNIQUE NOT NULL,
         password    TEXT NOT NULL,
         avatar_url  TEXT
@@ -43,11 +44,17 @@ async function createTables() {
         created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         category_id UUID,
         user_id     TEXT NOT NULL,
+        assigned_to TEXT, 
 
         CONSTRAINT fk_user
           FOREIGN KEY(user_id) 
           REFERENCES users(id)
           ON DELETE CASCADE,
+
+        CONSTRAINT fk_assignee
+          FOREIGN KEY(assigned_to) 
+          REFERENCES users(id)
+          ON DELETE SET NULL,
 
         CONSTRAINT fk_task_category 
           FOREIGN KEY (category_id) 
@@ -57,7 +64,7 @@ async function createTables() {
     `;
     console.log("Tabela 'tasks' verificada/criada com sucesso.");
 
-    // 3ª Tabela: Sub Tarefas (Depende de tasks)
+    // 4ª Tabela: Sub Tarefas (Depende de tasks)
     await sql`
     CREATE TABLE IF NOT EXISTS subtasks (
       id           UUID PRIMARY KEY,
@@ -71,8 +78,9 @@ async function createTables() {
         ON DELETE CASCADE
     )
   `;
+    console.log("Tabela 'subtasks' verificada/criada com sucesso.");
 
-    // 4ª Tabela: Rede de amizades (Depende de users)
+    // 5ª Tabela: Rede de amizades (Depende de users)
     await sql`
   CREATE TABLE IF NOT EXISTS friendships (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -84,6 +92,7 @@ async function createTables() {
     UNIQUE(sender_id, receiver_id) 
   );
 `;
+    console.log("Tabela 'friendships' verificada/criada com sucesso.");
 
     console.log("🎉 Todas as tabelas prontas para uso!");
     process.exit(0);
@@ -105,12 +114,14 @@ createTables();
 CREATE TABLE users (
   id          TEXT PRIMARY KEY,
   name        VARCHAR(100) NOT NULL,
+  username    VARCHAR(50) UNIQUE NOT NULL,
   email       VARCHAR(150) UNIQUE NOT NULL,
-  password    TEXT NOT NULL
+  password    TEXT NOT NULL,
+  avatar_url  TEXT
 ); 
 */
 
-/* 2ª Tabela: Categorias (Agora usando user_id referenciando users.id)
+/* 2ª Tabela: Categorias 
 -------------------------------------------------
 CREATE TABLE categories (
   id          UUID PRIMARY KEY,
@@ -125,7 +136,7 @@ CREATE TABLE categories (
 );
 */
 
-/* 3ª Tabela: Tarefas (Agora usando user_id referenciando users.id)
+/* 3ª Tabela: Tarefas 
 -------------------------------------------------
 CREATE TABLE tasks (
   id          UUID PRIMARY KEY,
@@ -136,42 +147,49 @@ CREATE TABLE tasks (
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   category_id UUID,
   user_id     TEXT NOT NULL,
+  assigned_to TEXT,
 
   CONSTRAINT fk_user
     FOREIGN KEY(user_id) 
     REFERENCES users(id)
     ON DELETE CASCADE,
+    
+  CONSTRAINT fk_assignee
+    FOREIGN KEY(assigned_to) 
+    REFERENCES users(id)
+    ON DELETE SET NULL,
 
   CONSTRAINT fk_task_category 
     FOREIGN KEY (category_id) 
     REFERENCES categories(id) 
     ON DELETE SET NULL
 );
+*/
 
- // 3ª Tabela: Sub Tarefas (Depende de tasks)
-    await sql`
-    CREATE TABLE IF NOT EXISTS subtasks (
-      id           UUID PRIMARY KEY,
-      title        VARCHAR(255) NOT NULL,
-      is_completed BOOLEAN DEFAULT FALSE,
-      task_id      UUID NOT NULL,
+/* 4ª Tabela: Sub Tarefas (Checklist)
+-------------------------------------------------
+CREATE TABLE subtasks (
+  id           UUID PRIMARY KEY,
+  title        VARCHAR(255) NOT NULL,
+  is_completed BOOLEAN DEFAULT FALSE,
+  task_id      UUID NOT NULL,
 
-      CONSTRAINT fk_task
-        FOREIGN KEY(task_id) 
-        REFERENCES tasks(id)
-        ON DELETE CASCADE
-    )
-  `;
-  // 4ª Tabela: Rede de amizades (Depende de users)
-  await sql`
-  CREATE TABLE IF NOT EXISTS friendships (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    sender_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    receiver_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    status VARCHAR(20) DEFAULT 'PENDING',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    UNIQUE(sender_id, receiver_id) 
-  );
-`;
+  CONSTRAINT fk_task
+    FOREIGN KEY(task_id) 
+    REFERENCES tasks(id)
+    ON DELETE CASCADE
+)
+*/
+
+/* 5ª Tabela: Rede de amizades
+-------------------------------------------------
+CREATE TABLE friendships (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  sender_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  receiver_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status VARCHAR(20) DEFAULT 'PENDING',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  UNIQUE(sender_id, receiver_id) 
+);
 */

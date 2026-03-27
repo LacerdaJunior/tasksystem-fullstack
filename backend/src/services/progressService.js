@@ -4,7 +4,7 @@ const database = new DatabasePostg();
 
 export class ProgressService {
   async getProgressReport(userId) {
-    const tasks = await database.getTasks(userId);
+    const tasks = await database.getTasksByUser(userId);
     const allSubtasks = await database.getAllSubtasksByUser(userId);
 
     const relatorio = tasks.map((task) => {

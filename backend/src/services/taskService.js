@@ -49,6 +49,7 @@ export class TaskService {
       due_date: task.due_date,
       created_at: task.created_at,
       assigned_to: task.assigned_to || null,
+      owner_id: task.user_id,
       category: task.category_id
         ? {
             id: task.category_id,
