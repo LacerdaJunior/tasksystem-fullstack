@@ -11,7 +11,7 @@ import {
   ArrowRight,
   ArrowLeft,
 } from "lucide-react";
-import { Footer } from "../components/footer";
+import { Footer } from "../components/Footer";
 import { BackHome } from "../components/BackHome";
 import { api } from "../services/api";
 import toast from "react-hot-toast";
@@ -93,7 +93,6 @@ export function Register() {
     setCarregando(true);
 
     try {
-    
       await api.post("/register", {
         name: formData.name,
         email: formData.email,
